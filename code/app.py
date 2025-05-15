@@ -289,7 +289,8 @@ with tab2:
     st.header("2. So sánh sentiment giữa các nền tảng")
     method = st.selectbox(
         "Chọn phương pháp phân tích sentiment:",
-        ['DistilBERT', 'Lexicon']
+        ['DistilBERT', 'Lexicon'],
+        key='tab2_method'
     )
     method_map = {
         'DistilBERT': 'dl_label',
@@ -370,11 +371,22 @@ with tab3:
     with col1:
         max_words = st.slider("Số lượng từ/cụm từ hiển thị", 10, 100, 20)
         ngram_range = st.slider("Độ dài cụm từ (n-gram)", 1, 3, 2)
+        method = st.selectbox(
+            "Chọn phương pháp phân tích sentiment:",
+            ['DistilBERT', 'Lexicon'],
+            key='tab3_method'
+        )
+        method_map = {
+            'DistilBERT': 'dl_label',
+            'Lexicon': 'tb_label'
+        }
+        selected_method = method_map[method]
 
     filtered_data = filtered.copy()
 
     try:
-        neg_ids = distilbert_df.loc[distilbert_df['dl_label']=='negative', 'review_id']
+        # Lấy review_id của các review negative từ phương pháp đã chọn
+        neg_ids = filtered_data[filtered_data[selected_method] == 'negative']['review_id']
         texts_to_plot = filtered_data[filtered_data['review_id'].isin(neg_ids)]['clean_content'].dropna().tolist()
 
         if not texts_to_plot:
