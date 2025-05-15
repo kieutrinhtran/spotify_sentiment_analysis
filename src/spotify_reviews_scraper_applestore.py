@@ -14,9 +14,10 @@ def fix_encoding_df(df):
 def scrape_spotify_reviews_apple_multi_country(count=1000, countries=None):
     if countries is None:
         countries = [
-            'us', 'gb', 'jp', 'de', 'fr', 'au', 'ca', 'vn', 'kr', 'ru', 'it', 'es', 'br', 'in', 'mx',
-            'sg', 'th', 'id', 'nl', 'se', 'tr', 'ch', 'pl', 'be', 'no', 'dk', 'fi', 'at', 'cz', 'pt',
-            'hu', 'gr', 'il', 'sa', 'ae', 'ar', 'cl', 'co', 'pe', 'za', 'nz'
+            'us', 'gb', 'au', 'ca', 'nz', 'za', 'jp', 'de', 'fr', 'vn', 
+            'kr', 'ru', 'it', 'es', 'br', 'in', 'mx', 'sg', 'th', 'id', 
+            'nl', 'se', 'tr', 'ch', 'pl', 'be', 'no', 'dk', 'fi', 'at', 
+            'cz', 'pt', 'hu', 'gr', 'il', 'sa', 'ae', 'ar', 'cl', 'co', 'pe'
         ]
     app_id = 324684580
     reviews = []
@@ -92,7 +93,7 @@ def scrape_spotify_reviews_apple_multi_country(count=1000, countries=None):
 
 if __name__ == "__main__":
     # Thu thập 1000 đánh giá tiếng Anh từ nhiều quốc gia
-    reviews_df = scrape_spotify_reviews_apple_multi_country(count=100000)
+    reviews_df = scrape_spotify_reviews_apple_multi_country(count=1000)
     
     if reviews_df is not None:
         # Hiển thị thống kê cơ bản

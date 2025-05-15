@@ -2,8 +2,8 @@
 from google_play_scraper import Sort, reviews  # Thư viện để scrape dữ liệu từ Google Play Store
 import pandas as pd  # Thư viện để xử lý và lưu trữ dữ liệu dạng bảng
 from datetime import datetime  # Thư viện để xử lý thời gian
-import ftfy
-import html
+import ftfy # Thư viện để sửa lỗi encoding
+import html # Thư viện để sửa lỗi encoding
 
 def scrape_spotify_ggplay_reviews(count=1000):
     """
@@ -63,7 +63,7 @@ def read_and_concat(files, source):
 
 if __name__ == "__main__":
     # Thu thập đánh giá
-    reviews_df = scrape_spotify_ggplay_reviews(count=100000)
+    reviews_df = scrape_spotify_ggplay_reviews(count=1000)
     
     # Hiển thị thống kê cơ bản
     print("\nThống kê cơ bản:")
