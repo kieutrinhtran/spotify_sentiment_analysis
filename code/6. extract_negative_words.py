@@ -53,7 +53,7 @@ def plot_phrases(phrases_freq):
     plt.show()
 
 if __name__ == "__main__":
-    review_file = 'data/combined_spotify_reviews.csv'
+    review_file = 'result/combined_spotify_reviews.csv'
     result_file = 'result/lexicon_results.csv'  # hoặc 'result/distilbert_results.csv'
     text_col = 'clean_content'
     label_col = 'tb_label'  # với lexicon_results.csv
