@@ -102,19 +102,24 @@ class LexiconSentimentAnalyzer:
         Phân tích sentiment sử dụng TextBlob cho một batch văn bản
         """
         results = []
+        label_map = {
+            'pos': 'positive',
+            'neg': 'negative',
+            'neu': 'neutral'
+        }
         for text in texts:
             try:
                 blob = TextBlob(str(text), analyzer=NaiveBayesAnalyzer())
                 sent = blob.sentiment
                 results.append({
-                    'tb_label': sent.classification,
+                    'tb_label': label_map.get(sent.classification, 'neutral'),
                     'tb_prob_pos': sent.p_pos,
                     'tb_prob_neg': sent.p_neg
                 })
             except Exception as e:
                 logging.warning(f"TextBlob analysis failed for text: {str(e)}")
                 results.append({
-                    'tb_label': 'neu',
+                    'tb_label': 'neutral',
                     'tb_prob_pos': 0.5,
                     'tb_prob_neg': 0.5
                 })
@@ -127,10 +132,17 @@ class LexiconSentimentAnalyzer:
         texts = df[text_column].astype(str).tolist()
         n_samples = len(texts)
         
-        # Khởi tạo DataFrame kết quả với cùng index như df đầu vào
+        # Khởi tạo DataFrame kết quả với cùng index như df đầu vào và đúng dtypes
         results_df = pd.DataFrame(index=df.index)
         results_df['review_id'] = df['id']
         results_df['source'] = df['source']
+        results_df['vader_compound'] = 0.0
+        results_df['vader_pos'] = 0.0
+        results_df['vader_neu'] = 0.0
+        results_df['vader_neg'] = 0.0
+        results_df['tb_label'] = ''  # Initialize as string
+        results_df['tb_prob_pos'] = 0.0
+        results_df['tb_prob_neg'] = 0.0
         
         # Tạo progress bar
         n_batches = (n_samples + self.batch_size - 1) // self.batch_size

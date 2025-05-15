@@ -11,4 +11,5 @@ seaborn==0.12.2
 jupyter==1.0.0 
 google-play-scraper==1.2.4
 ftfy==6.1.1
-emoji==1.0.0
+emoji
+streamlit

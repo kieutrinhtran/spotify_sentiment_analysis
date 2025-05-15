@@ -4,6 +4,7 @@ import pandas as pd
 import re
 import unicodedata
 import nltk
+import emoji
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
