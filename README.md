@@ -1,51 +1,81 @@
-# Phân tích Sentiment Đánh giá Ứng dụng Spotify
+# Spotify Sentiment Analysis
 
-Dự án này thực hiện phân tích sentiment của các đánh giá ứng dụng Spotify trên cả Google Play Store và Apple App Store, sử dụng hai phương pháp chính:
-
-1. **Lexicon-based Approach**:
-   - Sử dụng VADER Sentiment Analyzer
-   - Sử dụng TextBlob
-   - Phân tích dựa trên từ điển cảm xúc
-
-2. **Machine Learning-based Approach**:
-   - Sử dụng mô hình BERT
-   - Phân tích dựa trên deep learning
-   - So sánh kết quả với phương pháp lexicon-based
+Dự án phân tích cảm xúc (sentiment analysis) của người dùng đối với ứng dụng Spotify trên cả hai nền tảng Google Play Store và Apple App Store.
 
 ## Cấu trúc dự án
 
 ```
-spotify_sentiment_analysis/
-├── data/               # Chứa dữ liệu đánh giá
-├── src/               # Mã nguồn Python
-├── notebooks/         # Jupyter notebooks cho phân tích
-└── requirements.txt   # Các thư viện cần thiết
+.
+├── code/                    # Mã nguồn chính
+│   ├── 0. spotify_reviews_scraper_ggplaystore.py    # Thu thập đánh giá từ Google Play Store
+│   ├── 1. spotify_reviews_scraper_applestore.py     # Thu thập đánh giá từ Apple App Store
+│   ├── 2. pre_process.py                           # Tiền xử lý dữ liệu
+│   ├── 3. sentiment_analysis.py                    # Phân tích cảm xúc
+│   ├── 4. sentiment_comparison_two_platforms.py     # So sánh kết quả giữa hai nền tảng
+│   └── 5. extract_negative_words.py                # Trích xuất từ ngữ tiêu cực
+├── data/                   # Dữ liệu gốc
+├── data-test/             # Dữ liệu test
+├── logs/                  # File log
+├── result/                # Kết quả phân tích
+└── requirements.txt       # Các thư viện cần thiết
 ```
+
+## Yêu cầu hệ thống
+
+- Python 3.x
+- Các thư viện Python được liệt kê trong `requirements.txt`
 
 ## Cài đặt
 
 1. Tạo môi trường ảo:
 ```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
+python -m venv .venv
 ```
 
-2. Cài đặt các thư viện:
+2. Kích hoạt môi trường ảo:
+- Windows:
+```bash
+.venv\Scripts\activate
+```
+- Linux/Mac:
+```bash
+source .venv/bin/activate
+```
+
+3. Cài đặt các thư viện cần thiết:
 ```bash
 pip install -r requirements.txt
 ```
 
-## Sử dụng
+## Cách sử dụng
 
-1. Thu thập dữ liệu đánh giá từ Google Play Store và Apple App Store
-2. Chạy phân tích sentiment bằng các phương pháp khác nhau
-3. So sánh và đánh giá kết quả
+Dự án được thực hiện theo các bước sau:
 
-## Kết quả
+1. Thu thập dữ liệu:
+   - Chạy `0. spotify_reviews_scraper_ggplaystore.py` để lấy đánh giá từ Google Play Store
+   - Chạy `1. spotify_reviews_scraper_applestore.py` để lấy đánh giá từ Apple App Store
 
-Dự án sẽ cung cấp:
-- Phân tích chi tiết về sentiment của đánh giá
-- So sánh giữa hai phương pháp
-- Biểu đồ và thống kê
-- Báo cáo chi tiết về kết quả phân tích 
+2. Tiền xử lý dữ liệu:
+   - Chạy `2. pre_process.py` để làm sạch và chuẩn hóa dữ liệu
+
+3. Phân tích cảm xúc:
+   - Chạy `3. sentiment_analysis.py` để thực hiện phân tích cảm xúc
+
+4. So sánh kết quả:
+   - Chạy `4. sentiment_comparison_two_platforms.py` để so sánh kết quả giữa hai nền tảng
+
+5. Trích xuất từ ngữ tiêu cực:
+   - Chạy `5. extract_negative_words.py` để phân tích các từ ngữ tiêu cực
+
+## Các thư viện chính
+
+- pandas, numpy: Xử lý dữ liệu
+- scikit-learn: Machine learning
+- nltk, textblob, vaderSentiment: Phân tích cảm xúc
+- transformers, torch: Deep learning
+- matplotlib, seaborn: Trực quan hóa dữ liệu
+- google-play-scraper: Thu thập dữ liệu từ Google Play Store
+
+## Giấy phép
+
+Dự án này được phân phối dưới giấy phép MIT. Xem file `LICENSE` để biết thêm chi tiết. 
