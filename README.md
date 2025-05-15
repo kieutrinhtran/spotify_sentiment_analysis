@@ -75,7 +75,3 @@ Dự án được thực hiện theo các bước sau:
 - transformers, torch: Deep learning
 - matplotlib, seaborn: Trực quan hóa dữ liệu
 - google-play-scraper: Thu thập dữ liệu từ Google Play Store
-
-## Giấy phép
-
-Dự án này được phân phối dưới giấy phép MIT. Xem file `LICENSE` để biết thêm chi tiết. 
