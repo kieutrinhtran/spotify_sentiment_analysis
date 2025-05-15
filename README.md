@@ -5,29 +5,28 @@ Dự án phân tích cảm xúc (sentiment analysis) của người dùng đối
 ## Cấu trúc dự án
 
 ```
-.
-├── code/                    # Mã nguồn chính
+spotify_sentiment_analysis/
+├── code/                           # Thư mục chứa mã nguồn
 │   ├── 0. spotify_reviews_scraper_ggplaystore.py    # Thu thập đánh giá từ Google Play Store
 │   ├── 1. spotify_reviews_scraper_applestore.py     # Thu thập đánh giá từ Apple App Store
-│   ├── 2. pre_process.py                           # Tiền xử lý dữ liệu
-│   ├── 3. sentiment_analysis.py                    # Phân tích cảm xúc
-│   ├── 4. sentiment_comparison_two_platforms.py     # So sánh kết quả giữa hai nền tảng
-│   └── 5. extract_negative_words.py                # Trích xuất từ ngữ tiêu cực
-├── data/                   # Dữ liệu gốc
-├── data-test/             # Dữ liệu test
-├── logs/                  # File log
-├── result/                # Kết quả phân tích
-└── requirements.txt       # Các thư viện cần thiết
+│   ├── 2. pre_process.py           # Tiền xử lý dữ liệu
+│   ├── 3. HDFS_storage.py          # Lưu trữ dữ liệu vào HDFS
+│   ├── 4. sentiment_analysis.py    # Phân tích cảm xúc
+│   ├── 5. sentiment_comparison_two_platforms.py     # So sánh cảm xúc giữa hai nền tảng
+│   ├── 6. extract_negative_words.py # Trích xuất từ ngữ tiêu cực
+│   ├── 7. run_with_ngrok.py        # Chạy ứng dụng với ngrok
+│   └── app.py                      # Ứng dụng Streamlit chính
+├── data/                           # Thư mục chứa dữ liệu gốc
+├── data-test/                      # Thư mục chứa dữ liệu test
+├── result/                         # Thư mục chứa kết quả phân tích
+├── logs/                           # Thư mục chứa log
+├── requirements.txt                # Danh sách các thư viện cần thiết
+└── README.md                       # Tài liệu hướng dẫn
 ```
-
-## Yêu cầu hệ thống
-
-- Python 3.x
-- Các thư viện Python được liệt kê trong `requirements.txt`
 
 ## Cài đặt
 
-1. Tạo môi trường ảo:
+1. Tạo môi trường ảo Python:
 ```bash
 python -m venv .venv
 ```
@@ -47,25 +46,38 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Cách sử dụng
+## Các tính năng chính
 
-Dự án được thực hiện theo các bước sau:
+1. **Thu thập dữ liệu**:
+   - Thu thập đánh giá từ Google Play Store
+   - Thu thập đánh giá từ Apple App Store
 
-1. Thu thập dữ liệu:
-   - Chạy `0. spotify_reviews_scraper_ggplaystore.py` để lấy đánh giá từ Google Play Store
-   - Chạy `1. spotify_reviews_scraper_applestore.py` để lấy đánh giá từ Apple App Store
+2. **Tiền xử lý dữ liệu**:
+   - Làm sạch văn bản
+   - Xử lý emoji và ký tự đặc biệt
+   - Chuẩn hóa dữ liệu
 
-2. Tiền xử lý dữ liệu:
-   - Chạy `2. pre_process.py` để làm sạch và chuẩn hóa dữ liệu
+3. **Phân tích cảm xúc**:
+   - Sử dụng nhiều mô hình phân tích cảm xúc khác nhau
+   - So sánh kết quả giữa các mô hình
+   - Trích xuất từ ngữ tiêu cực
 
-3. Phân tích cảm xúc:
-   - Chạy `3. sentiment_analysis.py` để thực hiện phân tích cảm xúc
+4. **Trực quan hóa dữ liệu**:
+   - Biểu đồ phân bố cảm xúc
+   - Word cloud cho các từ ngữ tiêu cực
+   - So sánh cảm xúc giữa hai nền tảng
 
-4. So sánh kết quả:
-   - Chạy `4. sentiment_comparison_two_platforms.py` để so sánh kết quả giữa hai nền tảng
+## Chạy ứng dụng
 
-5. Trích xuất từ ngữ tiêu cực:
-   - Chạy `5. extract_negative_words.py` để phân tích các từ ngữ tiêu cực
+1. Chạy ứng dụng Streamlit:
+```bash
+streamlit run code/app.py
+```
+
+2. Chạy với ngrok (để chia sẻ ứng dụng):
+```bash
+python code/run_with_ngrok.py
+```
 
 ## Các thư viện chính
 
@@ -73,5 +85,7 @@ Dự án được thực hiện theo các bước sau:
 - scikit-learn: Machine learning
 - nltk, textblob, vaderSentiment: Phân tích cảm xúc
 - transformers, torch: Deep learning
-- matplotlib, seaborn: Trực quan hóa dữ liệu
+- streamlit: Giao diện web
+- plotly: Trực quan hóa dữ liệu
+- wordcloud: Tạo word cloud
 - google-play-scraper: Thu thập dữ liệu từ Google Play Store
