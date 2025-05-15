@@ -332,7 +332,12 @@ with tab2:
             'variable': 'Sentiment'
         },
         template='plotly_dark',
-        height=500
+        height=500,
+        color_discrete_map={
+            'positive': '#2ecc71',  # Màu xanh lá
+            'neutral': '#95a5a6',  # Màu xám
+            'negative': '#e74c3c'  # Màu đỏ
+        }
     )
     
     # Cập nhật giao diện biểu đồ
@@ -346,7 +351,16 @@ with tab2:
             xanchor="right",
             x=1
         ),
-        hovermode='x unified'  # Hiển thị thông tin khi hover
+        hovermode='x unified',  # Hiển thị thông tin khi hover
+        plot_bgcolor='rgba(0,0,0,0)',  # Nền trong suốt
+        paper_bgcolor='rgba(0,0,0,0)'  # Nền giấy trong suốt
+    )
+    
+    # Cập nhật style của đường
+    fig_time.update_traces(
+        line=dict(width=2.5),  # Tăng độ dày của đường
+        mode='lines+markers',  # Thêm điểm đánh dấu
+        marker=dict(size=6)  # Kích thước điểm đánh dấu
     )
     
     st.plotly_chart(fig_time, use_container_width=True)
