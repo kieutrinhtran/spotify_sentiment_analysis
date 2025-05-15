@@ -27,6 +27,7 @@ def clean_text(text):
     """Tiền xử lý văn bản: xóa HTML, URL, ký tự đặc biệt, emoji, dấu, stopwords."""
     if not isinstance(text, str):
         return ''
+    text = remove_emojis(text)  
     text = re.sub(r'<.*?>', ' ', text)
     text = re.sub(r'http\\S+', ' ', text)
     text = re.sub(r'[^a-zA-Z\\s]', ' ', text)

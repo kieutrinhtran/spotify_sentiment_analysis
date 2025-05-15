@@ -93,7 +93,7 @@ def scrape_spotify_reviews_apple_multi_country(count=1000, countries=None):
 
 if __name__ == "__main__":
     # Thu thập 1000 đánh giá tiếng Anh từ nhiều quốc gia
-    reviews_df = scrape_spotify_reviews_apple_multi_country(count=1000)
+    reviews_df = scrape_spotify_reviews_apple_multi_country(count=100)
     
     if reviews_df is not None:
         # Hiển thị thống kê cơ bản

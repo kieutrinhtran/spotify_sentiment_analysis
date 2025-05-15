@@ -79,13 +79,22 @@ class LexiconSentimentAnalyzer:
         """
         results = []
         for text in texts:
-            vs = self.vader.polarity_scores(text)
-            results.append({
-                'vader_compound': vs['compound'],
-                'vader_pos': vs['pos'],
-                'vader_neu': vs['neu'],
-                'vader_neg': vs['neg']
-            })
+            try:
+                vs = self.vader.polarity_scores(str(text))
+                results.append({
+                    'vader_compound': vs['compound'],
+                    'vader_pos': vs['pos'],
+                    'vader_neu': vs['neu'],
+                    'vader_neg': vs['neg']
+                })
+            except Exception as e:
+                logging.warning(f"VADER analysis failed for text: {str(e)}")
+                results.append({
+                    'vader_compound': 0.0,
+                    'vader_pos': 0.0,
+                    'vader_neu': 1.0,
+                    'vader_neg': 0.0
+                })
         return pd.DataFrame(results)
 
     def analyze_textblob_batch(self, texts):
@@ -94,13 +103,21 @@ class LexiconSentimentAnalyzer:
         """
         results = []
         for text in texts:
-            blob = TextBlob(text, analyzer=NaiveBayesAnalyzer())
-            sent = blob.sentiment
-            results.append({
-                'tb_label': sent.classification,
-                'tb_prob_pos': sent.p_pos,
-                'tb_prob_neg': sent.p_neg
-            })
+            try:
+                blob = TextBlob(str(text), analyzer=NaiveBayesAnalyzer())
+                sent = blob.sentiment
+                results.append({
+                    'tb_label': sent.classification,
+                    'tb_prob_pos': sent.p_pos,
+                    'tb_prob_neg': sent.p_neg
+                })
+            except Exception as e:
+                logging.warning(f"TextBlob analysis failed for text: {str(e)}")
+                results.append({
+                    'tb_label': 'neu',
+                    'tb_prob_pos': 0.5,
+                    'tb_prob_neg': 0.5
+                })
         return pd.DataFrame(results)
 
     def analyze_reviews(self, df, text_column='clean_content'):
@@ -109,8 +126,12 @@ class LexiconSentimentAnalyzer:
         """
         texts = df[text_column].astype(str).tolist()
         n_samples = len(texts)
-        all_results = []
-
+        
+        # Khởi tạo DataFrame kết quả với cùng index như df đầu vào
+        results_df = pd.DataFrame(index=df.index)
+        results_df['review_id'] = df['id']
+        results_df['source'] = df['source']
+        
         # Tạo progress bar
         n_batches = (n_samples + self.batch_size - 1) // self.batch_size
         pbar = tqdm(total=n_batches, desc='Lexicon Analysis Progress', unit='batch')
@@ -119,21 +140,19 @@ class LexiconSentimentAnalyzer:
         for i in range(0, n_samples, self.batch_size):
             batch_start_time = time.time()
             batch_texts = texts[i:i + self.batch_size]
+            batch_indices = df.index[i:i + len(batch_texts)]
             
             # Phân tích VADER cho batch
             vader_results = self.analyze_vader_batch(batch_texts)
+            vader_results.index = batch_indices
             
             # Phân tích TextBlob cho batch
             textblob_results = self.analyze_textblob_batch(batch_texts)
+            textblob_results.index = batch_indices
             
-            # Kết hợp kết quả cho batch
-            batch_results = pd.concat([
-                df.iloc[i:i + len(batch_texts)][['id', 'source']].rename(columns={'id': 'review_id'}),
-                vader_results,
-                textblob_results
-            ], axis=1)
-            
-            all_results.append(batch_results)
+            # Cập nhật kết quả vào DataFrame chính
+            results_df.loc[batch_indices, vader_results.columns] = vader_results
+            results_df.loc[batch_indices, textblob_results.columns] = textblob_results
             
             # Cập nhật progress bar
             batch_time = time.time() - batch_start_time
@@ -141,7 +160,14 @@ class LexiconSentimentAnalyzer:
             pbar.update(1)
 
         pbar.close()
-        return pd.concat(all_results, ignore_index=True)
+        
+        # Đảm bảo thứ tự cột giống như ban đầu
+        results_df = results_df[[
+            'review_id', 'source', 'vader_compound', 'vader_pos', 
+            'vader_neu', 'vader_neg', 'tb_label', 'tb_prob_pos', 'tb_prob_neg'
+        ]]
+        
+        return results_df
 
 class TransformerSentimentAnalyzer:
     """

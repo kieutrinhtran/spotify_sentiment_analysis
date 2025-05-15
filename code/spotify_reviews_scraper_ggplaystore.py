@@ -63,7 +63,7 @@ def read_and_concat(files, source):
 
 if __name__ == "__main__":
     # Thu thập đánh giá
-    reviews_df = scrape_spotify_ggplay_reviews(count=1000)
+    reviews_df = scrape_spotify_ggplay_reviews(count=100)
     
     # Hiển thị thống kê cơ bản
     print("\nThống kê cơ bản:")
