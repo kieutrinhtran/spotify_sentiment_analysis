@@ -11,7 +11,7 @@ Dự án phân tích cảm xúc (sentiment analysis) của người dùng đối
 ```bash
 git clone https://github.com/kieutrinhtran/spotify_sentiment_analysis.git
 cd spotify_sentiment_analysis
-
+```
 ## Cấu trúc dự án
 
 ```
