@@ -2,6 +2,16 @@
 
 Dự án phân tích cảm xúc (sentiment analysis) của người dùng đối với ứng dụng Spotify trên cả hai nền tảng Google Play Store và Apple App Store.
 
+---
+
+## Clone repository
+
+Để bắt đầu, bạn cần clone mã nguồn từ GitHub về máy:
+
+```bash
+git clone https://github.com/kieutrinhtran/spotify_sentiment_analysis.git
+cd spotify_sentiment_analysis
+
 ## Cấu trúc dự án
 
 ```
