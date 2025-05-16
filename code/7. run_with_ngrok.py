@@ -14,8 +14,14 @@ def is_port_in_use(port):
 
 def main():
     try:
-        # Set token ngrok (thay YOUR_NGROK_AUTH_TOKEN bằng token thật của bạn)
-        conf.get_default().auth_token = "2x9ISPX9Dal2Qak7tgx5B5ivmAO_24Nw4XZztJVaYbZeGGwTk"
+        # Lấy token từ người dùng
+        ngrok_token = input("Vui lòng nhập YOUR_NGROK_AUTH_TOKEN: ").strip() #2x8kFDTaBil3PDgNyNg56s27Ooz_4bTuHe1f4pCyJidYZwDFJ
+        if not ngrok_token:
+            print("❌ Không có token được cung cấp. Chương trình sẽ kết thúc.")
+            return
+            
+        # Set token ngrok
+        conf.get_default().auth_token = ngrok_token
         logging.info("Đã thiết lập ngrok token")
 
         # Kiểm tra port 8501
