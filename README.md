@@ -1,6 +1,7 @@
 # Spotify Sentiment Analysis
 
 Dự án phân tích cảm xúc (sentiment analysis) của người dùng đối với ứng dụng Spotify trên cả hai nền tảng Google Play Store và Apple App Store.
+![image](https://github.com/user-attachments/assets/1b5ba0cc-c499-4d51-aff6-ae5494d93621)
 
 ---
 
