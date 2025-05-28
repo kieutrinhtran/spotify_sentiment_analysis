@@ -274,7 +274,7 @@ if __name__ == '__main__':
         
         # 1. Load dữ liệu từ file CSV
         logging.info('Loading data from CSV...')
-        df = pd.read_csv('data/combined_spotify_reviews.csv',
+        df = pd.read_csv('result/combined_spotify_reviews.csv',
                         parse_dates=['date','scraped_at'])
         df['clean_content'] = df['clean_content'].fillna('')
         logging.info(f'Loaded {len(df)} reviews')

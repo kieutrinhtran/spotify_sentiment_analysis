@@ -135,8 +135,8 @@ def main():
         save = input("Bạn có muốn lưu kết quả vào file CSV không? (y/n): ")
         if save.lower() == 'y':
             save_df.insert(0, 'id', range(1, len(save_df) + 1))
-            save_df.set_index('id').to_csv('data/combined_spotify_reviews.csv')
-            print("Đã lưu file 'data/combined_spotify_reviews.csv' (chỉ giữ lại các cột quan trọng, có cột id làm index)")
+            save_df.set_index('id').to_csv('result/combined_spotify_reviews.csv')
+            print("Đã lưu file 'result/combined_spotify_reviews.csv' (chỉ giữ lại các cột quan trọng, có cột id làm index)")
         else:
             print("Không lưu kết quả.")
 

@@ -267,6 +267,76 @@ with tab1:
                          ['VADER', 'TextBlob', 'DistilBERT'], 
                          ['positive','neutral','negative'])
 
+    st.subheader("Bảng so sánh hiệu suất các mô hình")
+    # Tính toán các metrics cho từng phương pháp so với rating_label
+    methods = ['vader_label', 'tb_label', 'dl_label']
+    method_names = ['VADER', 'TextBlob', 'DistilBERT']
+    
+    # Tạo DataFrame để lưu kết quả
+    performance_data = []
+    
+    for method, name in zip(methods, method_names):
+        # Lọc dữ liệu không null
+        valid_data = filtered.dropna(subset=[method, 'rating_label'])
+        
+        # Tính toán các metrics
+        metrics = compute_all_metrics(
+            valid_data['rating_label'],
+            valid_data[method],
+            labels=['positive', 'neutral', 'negative']
+        )
+        
+        # Thêm vào danh sách kết quả
+        performance_data.append({
+            'Phương pháp': name,
+            'Accuracy': metrics['Accuracy'],
+            'Precision (Macro)': metrics['Precision_macro'],
+            'Recall (Macro)': metrics['Recall_macro'],
+            'F1-score (Macro)': metrics['F1_macro'],
+            'Precision (Positive)': metrics['Precision_positive'],
+            'Recall (Positive)': metrics['Recall_positive'],
+            'F1-score (Positive)': metrics['F1_positive'],
+            'Precision (Negative)': metrics['Precision_negative'],
+            'Recall (Negative)': metrics['Recall_negative'],
+            'F1-score (Negative)': metrics['F1_negative']
+        })
+    
+    # Tạo DataFrame và định dạng
+    performance_df = pd.DataFrame(performance_data)
+    
+    # Tạo bản sao để định dạng hiển thị
+    display_df = performance_df.copy()
+    
+    # Định dạng các cột số thành phần trăm
+    numeric_cols = display_df.columns[1:]
+    display_df[numeric_cols] = display_df[numeric_cols].applymap(lambda x: f"{x*100:.2f}%")
+    
+    # Áp dụng background gradient cho DataFrame gốc
+    styled_df = performance_df.style.background_gradient(
+        subset=numeric_cols,
+        cmap='RdYlGn',
+        vmin=0,
+        vmax=1
+    )
+    
+    # Thay thế các giá trị số bằng giá trị đã định dạng
+    for col in numeric_cols:
+        styled_df = styled_df.format({col: lambda x: f"{x*100:.2f}%"})
+    
+    # Hiển thị bảng với style
+    st.dataframe(styled_df, use_container_width=True)
+    
+    # Thêm giải thích
+    st.markdown("""
+    **Giải thích các metrics:**
+    - **Accuracy**: Tỷ lệ dự đoán đúng trên tổng số mẫu
+    - **Precision**: Tỷ lệ dự đoán đúng trong số các mẫu được dự đoán là một lớp cụ thể
+    - **Recall**: Tỷ lệ dự đoán đúng trong số các mẫu thực tế thuộc một lớp cụ thể
+    - **F1-score**: Trung bình điều hòa của Precision và Recall
+    
+    *Lưu ý: Các metrics được tính toán dựa trên so sánh với rating_label làm ground truth*
+    """)
+
 # Tab 2
 def plot_platform_sentiment(data, label_col, title):
     grp = data.groupby(['source', label_col]).size().unstack(fill_value=0)
